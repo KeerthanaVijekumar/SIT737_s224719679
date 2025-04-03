@@ -3,6 +3,9 @@ ShiftSync is a lightweight Node.js web application built to simulate a shift man
 Initialize a Node.js App
 npm init -y
 
+Install Required Dependencies
+npm install express body-parser
+
 API routes I implement
 
 **1. GET - /shifts**
