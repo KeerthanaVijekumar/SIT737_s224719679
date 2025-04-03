@@ -134,6 +134,8 @@ docker push s224719679/shiftsync-app
 
 **Run The Project**
 1.Clone the project from github repository
+git clone https://github.com/KeerthanaVijekumar/SIT737_s224719679.git
+cd Task5.1P/shiftsync
 
 2.Build & Run the Docker Container
 docker-compose up --build
