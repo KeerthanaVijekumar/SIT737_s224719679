@@ -2,9 +2,8 @@
 
 This README documents the process of deploying the **ShiftSync** application to a **local Kubernetes cluster** using **Docker Desktop + Kubernetes**, as part of SIT737 Task 6.1P.
 
-Objective
-Deploy the existing Docker image of the `ShiftSync` application to a local Kubernetes cluster without using NodePort or external exposure.
-
+## Objective
+Deploy the existing Docker image of the `ShiftSync` application to a local Kubernetes cluster.
 # Prerequisites
 - Docker Desktop with Kubernetes enabled
 - Docker image from previous task (Task 5.2D)
