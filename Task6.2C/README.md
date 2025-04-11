@@ -42,7 +42,7 @@ kubectl port-forward service/shiftsync-service 3000:80
 kubectl get all
 ```
 
-## Then open your browser to:
+## Then open browser to:
 ```
 http://localhost:3000
 ```
