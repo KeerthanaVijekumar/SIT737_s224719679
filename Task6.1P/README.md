@@ -47,4 +47,4 @@ kubectl get all
 # Limitations
 - Since I used **ClusterIP** and **did not expose**, the app is not accessible via browser.
 - This setup is meant for validating Kubernetes deployment only.
-- In Task 6.2C, I will use kubectl port-forward to demonstrate accessibility of the application via a web browser.
+- In Task 6.2C, I will use kubectl port-forward to demonstrate local browser-based access to the application. Although the service remains internal (ClusterIP), port-forwarding allows temporary access on the local machine for testing purposes.
