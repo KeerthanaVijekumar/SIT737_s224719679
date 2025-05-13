@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ShiftSync Admin</title>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+
+  <h2>Create New Shift</h2>
+  <input type="date" id="date" />
+  <input type="text" id="time" placeholder="e.g. 09:00 - 17:00" />
+  <button onclick="createShift()">Create Shift</button>
+
+  <h2>Allocate Shift to Employee</h2>
+  <input type="number" id="empId" placeholder="Employee ID" />
+  <input type="number" id="shiftId" placeholder="Shift ID" />
+  <button onclick="allocateShift()">Allocate</button>
+
+  <h2>All Shifts</h2>
+  <ul id="shiftList"></ul>
+
+  <script>
+    async function fetchShifts() {
+      const res = await fetch('http://localhost:3000/shifts');
+      const data = await res.json();
+      document.getElementById('shiftList').innerHTML = data.map(s =>
+        `<li>${s.id}: ${s.date}, ${s.time}</li>`).join('');
+    }
+
+    async function createShift() {
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      await fetch('http://localhost:3000/shifts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date, time })
+      });
+      fetchShifts();
+    }
+
+    async function allocateShift() {
+      const employee_id = parseInt(document.getElementById('empId').value);
+      const shift_id = parseInt(document.getElementById('shiftId').value);
+      await fetch('http://localhost:3000/allocate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ employee_id, shift_id })
+      });
+      alert('Shift allocated');
+    }
+
+    fetchShifts();
+  </script>
+</body>
+</html>

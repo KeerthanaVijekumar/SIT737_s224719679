@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ShiftSync Employee</title>
+</head>
+<body>
+  <h1>Employee Dashboard</h1>
+
+  <input type="number" id="userId" placeholder="User ID" />
+  <input type="number" id="shiftId" placeholder="Shift ID" />
+  <button onclick="clockIn()">Clock In</button>
+  <button onclick="clockOut()">Clock Out</button>
+
+  <script>
+    async function clockIn() {
+      const user_id = parseInt(document.getElementById('userId').value);
+      const shift_id = parseInt(document.getElementById('shiftId').value);
+      await fetch('http://localhost:3000/clockin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id, shift_id })
+      });
+      alert('Clock-in successful');
+    }
+
+    async function clockOut() {
+      const user_id = parseInt(document.getElementById('userId').value);
+      const shift_id = parseInt(document.getElementById('shiftId').value);
+      const res = await fetch('http://localhost:3000/clockout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id, shift_id })
+      });
+      const result = await res.json();
+      if (res.ok) {
+        alert('Clock-out: ' + result.time);
+      } else {
+        alert(result.error);
+      }
+    }
+  </script>
+</body>
+</html>

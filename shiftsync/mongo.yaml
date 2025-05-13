@@ -1,0 +1,23 @@
+# MongoDB Secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongo-secret
+type: Opaque
+data:
+  mongo-user: a2VlcnRoYW5h         # base64 for 'keerthana'
+  mongo-pass: a2VlcnRoYW5hMTIz     # base64 for 'keerthana123'
+
+---
+
+# MongoDB PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
