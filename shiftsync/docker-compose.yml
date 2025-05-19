@@ -3,24 +3,56 @@ version: '3.8'
 services:
   mongo:
     image: mongo
-    container_name: mongo
     ports:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
 
-  app:
-    build: .
-    container_name: shiftsync-app
+  auth-service:
+    build:
+      context: ./auth-service
     ports:
-      - "3000:3000"
-    depends_on:
-      - mongo
+      - "3002:3000"
     env_file:
       - .env
-    environment:
-      - MONGO_URL=${MONGO_URL}
-      - DEBUG_ENV=${DEBUG_ENV}
+    depends_on:
+      - mongo
+
+  employee-service:
+    build:
+      context: ./employee-service
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+
+  admin-service:
+    build:
+      context: ./admin-service
+    ports:
+      - "3001:3000"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+
+  frontend-service:
+    build:
+      context: ./frontend-service
+    working_dir: /usr/src/app
+    command: node server.js
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./frontend-service:/usr/src/app
+    env_file:
+      - .env
+    depends_on:
+      - auth-service
+      - employee-service
+      - admin-service
 
 volumes:
   mongo-data:

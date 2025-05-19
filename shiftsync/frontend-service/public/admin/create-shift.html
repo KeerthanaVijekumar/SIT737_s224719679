@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Shift - Admin</title>
+  <link rel="stylesheet" href="/admin/admin.css" />
+</head>
+<body>
+  <h2>Create a New Shift</h2>
+  <!-- Added action="#" and method="post" to avoid default GET submit -->
+  <form id="createShiftForm" action="http://localhost:3001/shifts" method="post">
+    <label for="shiftId">Shift ID:</label><br />
+    <input type="text" id="shiftId" name="shiftId" placeholder="Unique Shift ID" required /><br /><br />
+
+    <label for="date">Date:</label><br />
+    <input type="date" id="date" name="date" required /><br /><br />
+
+    <label for="startTime">Start Time:</label><br />
+    <input type="time" id="startTime" name="startTime" required /><br /><br />
+
+    <label for="endTime">End Time:</label><br />
+    <input type="time" id="endTime" name="endTime" required /><br /><br />
+
+    <button type="submit">Create Shift</button>
+  </form>
+  <div id="message"></div>
+</body>
+</html>
