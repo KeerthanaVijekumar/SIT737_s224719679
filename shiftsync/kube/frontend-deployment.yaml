@@ -14,11 +14,11 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: s224719679/frontend-service:latest
+          image: s224719679/frontend-service:v4
           ports:
             - containerPort: 3003
           env:
             - name: AUTH_API_URL
-              value: "http://auth-service:3000"
+              value: "http://335.244.91.242:3000"
             - name: ADMIN_API_URL
-              value: "http://admin-service:3000"
+              value: "http://35.189.45.141:3000"

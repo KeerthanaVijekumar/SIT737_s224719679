@@ -7,8 +7,7 @@
 </head>
 <body>
   <h2>Create a New Shift</h2>
-  <!-- Added action="#" and method="post" to avoid default GET submit -->
-  <form id="createShiftForm" action="${process.env.ADMIN_API_URL}/shifts" method="post">
+  <form id="createShiftForm">
     <label for="shiftId">Shift ID:</label><br />
     <input type="text" id="shiftId" name="shiftId" placeholder="Unique Shift ID" required /><br /><br />
 
@@ -24,5 +23,7 @@
     <button type="submit">Create Shift</button>
   </form>
   <div id="message"></div>
+
+  <script src="/admin/create-shift.js"></script>
 </body>
 </html>

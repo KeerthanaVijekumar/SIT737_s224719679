@@ -1,26 +1,28 @@
 console.log("create-shift.js loaded");
 
+const ADMIN_API_URL = 'http://35.189.45.141:3000';  
+
 function attachCreateShiftListener() {
+  console.log("Attaching submit listener...");
   const form = document.getElementById('createShiftForm');
   const messageDiv = document.getElementById('message');
   if (!form) return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault(); // prevent default form submit and page reload
+    console.log("Submit intercepted, sending POST");
 
     const shiftId = document.getElementById('shiftId').value.trim();
     const date = document.getElementById('date').value;
     const startTime = document.getElementById('startTime').value;
     const endTime = document.getElementById('endTime').value;
-    const token = localStorage.getItem('token'); // adjust if you need token auth
+    const token = localStorage.getItem('token'); 
 
     messageDiv.style.color = 'black';
     messageDiv.textContent = 'Creating shift...';
 
-    const ADMIN_API_URL = 'http://35.189.45.141:3000';
-
     try {
-      const response = await fetch('${process.env.ADMIN_API_URL}/shifts', {
+      const response = await fetch(`${ADMIN_API_URL}/shifts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,10 +50,14 @@ function attachCreateShiftListener() {
         messageDiv.textContent = data.message || 'Failed to create shift.';
       }
     } catch (err) {
+      console.error("Network error:", err);
       messageDiv.style.color = 'red';
       messageDiv.textContent = 'Network error.';
     }
   });
 }
 
-window.attachCreateShiftListener = attachCreateShiftListener;
+// Attach listener immediately after loading
+document.addEventListener('DOMContentLoaded', () => {
+  attachCreateShiftListener();
+});

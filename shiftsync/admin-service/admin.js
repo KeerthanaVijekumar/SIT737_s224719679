@@ -54,8 +54,14 @@ app.post('/shifts', async (req, res) => {
 
 // === View All Shifts ===
 app.get('/shifts', async (req, res) => {
-  const shifts = await Shift.find();
-  res.json(shifts);
+  try {
+    // Use .lean() to return plain JS objects (fixes undefined field issue)
+    const shifts = await Shift.find().lean();
+    res.json(shifts);
+  } catch (err) {
+    console.error("Failed to fetch shifts:", err);
+    res.status(500).json({ message: "Failed to fetch shifts" });
+  }
 });
 
 // === Approve a Shift Allocation ===
@@ -76,6 +82,50 @@ app.get('/allocations', async (req, res) => {
   const allocations = await Allocation.find({ approved: true });
   res.json(allocations);
 });
+
+// === Delete a Shift by shiftId ===
+app.delete('/shifts/:shiftId', async (req, res) => {
+  const { shiftId } = req.params;
+
+  try {
+    const deleted = await Shift.findOneAndDelete({ shiftId });
+    if (!deleted) {
+      return res.status(404).json({ message: 'Shift not found' });
+    }
+    res.json({ message: 'Shift deleted successfully', shift: deleted });
+  } catch (err) {
+    console.error("Error deleting shift:", err);
+    res.status(500).json({ message: 'Failed to delete shift' });
+  }
+});
+
+// === Edit/Update a Shift by shiftId ===
+app.put('/shifts/:shiftId', async (req, res) => {
+  const { shiftId } = req.params;
+  const { date, startTime, endTime } = req.body;
+
+  if (!date || !startTime || !endTime) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  try {
+    const updated = await Shift.findOneAndUpdate(
+      { shiftId },
+      { date, startTime, endTime },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: 'Shift not found' });
+    }
+
+    res.json({ message: 'Shift updated successfully', shift: updated });
+  } catch (err) {
+    console.error("Error updating shift:", err);
+    res.status(500).json({ message: 'Failed to update shift' });
+  }
+});
+
 
 // === VERSION ===
 app.get('/version', (req, res) => {

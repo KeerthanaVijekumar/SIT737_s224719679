@@ -4,7 +4,7 @@ metadata:
   name: admin-service
 spec:
   selector:
-    app: auth
+    app: admin
   ports:
     - protocol: TCP
       port: 3000
