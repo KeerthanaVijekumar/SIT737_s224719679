@@ -12,6 +12,22 @@ github repo URL : https://github.com/KeerthanaVijekumar/SIT737_s224719679
 - **Google Cloud Monitoring & Logging** – observability
 - **kubectl CLI** – cluster management
 
+
+# Application Architecture 
+The application is designed with microservice principles:
+
+auth-service	 -  Authenticates users and issues JWT tokens
+admin-service	 -  Allows admins to create, update, delete shift records
+frontend-service -	Serves HTML, JS, and CSS assets to users
+mongo-service	 -  Stores shift and allocation data using MongoDB
+
+# JWT Authentication Flow
+On login, the auth-service checks credentials from a static user list (users.js)
+A JWT token is generated with user role and ID, signed using a secret key
+The frontend stores the token in localStorage after successful login
+The token can later be passed with requests to secure endpoints
+This makes the app stateless, scalable, and suitable for cloud-native environments.
+
 # Create GKE Cluster in GCP
 can use command
 gcloud container clusters create shiftsync-cluster ^
