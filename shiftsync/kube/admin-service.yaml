@@ -4,9 +4,9 @@ metadata:
   name: admin-service
 spec:
   selector:
-    app: admin
+    app: auth
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-  type: ClusterIP
+  type: LoadBalancer

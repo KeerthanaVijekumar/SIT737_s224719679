@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: your-dockerhub-username/auth-service:latest
+          image: s224719679/auth-service:latest
           ports:
             - containerPort: 3000
           env:
@@ -22,4 +22,4 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: jwt-secret
-                  key: jwt-secret
+                  key: JWT_SECRET

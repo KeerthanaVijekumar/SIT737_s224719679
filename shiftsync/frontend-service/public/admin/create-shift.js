@@ -17,8 +17,10 @@ function attachCreateShiftListener() {
     messageDiv.style.color = 'black';
     messageDiv.textContent = 'Creating shift...';
 
+    const ADMIN_API_URL = 'http://35.189.45.141:3000';
+
     try {
-      const response = await fetch('http://localhost:3001/shifts', {
+      const response = await fetch('${process.env.ADMIN_API_URL}/shifts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

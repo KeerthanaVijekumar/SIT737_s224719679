@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: admin
-          image: your-dockerhub-username/admin-service:latest
+          image: s224719679/admin-service:latest
           ports:
             - containerPort: 3000
           env:

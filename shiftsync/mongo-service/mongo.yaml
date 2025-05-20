@@ -5,8 +5,10 @@ metadata:
   name: mongo-secret
 type: Opaque
 data:
-  mongo-user: a2VlcnRoYW5h         # base64 for 'keerthana'
-  mongo-pass: a2VlcnRoYW5hMTIz     # base64 for 'keerthana123'
+  mongo-user: a2VlcnRoYW5h           # base64 for 'keerthana'
+  mongo-pass: a2VlcnRoYW5hMTIz       # base64 for 'keerthana123'
+  mongo-url: bW9uZ29kYjovL2tlZXJ0aGFuYTprZWVydGhhbmExMjNAbW9uZ28tc2VydmljZToyNzAxNy9zaGlmdHN5bmMtZGI=
+  # base64 for 'mongodb://keerthana:keerthana123@mongo-service:27017/shiftsync-db'
 
 ---
 
