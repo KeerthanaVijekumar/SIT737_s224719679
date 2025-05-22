@@ -1,7 +1,7 @@
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const AUTH_API_URL = 'http://35.244.91.242:3000';
+  const AUTH_API_URL = 'http://35.189.38.17:3000';
 
   const staffId = document.getElementById('staffId').value;
   const password = document.getElementById('password').value;

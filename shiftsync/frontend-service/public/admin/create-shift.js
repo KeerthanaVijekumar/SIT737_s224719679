@@ -1,6 +1,6 @@
 console.log("create-shift.js loaded");
 
-const ADMIN_API_URL = 'http://35.189.45.141:3000';  
+const ADMIN_API_URL = 'http://34.116.118.12:3000';  
 
 function attachCreateShiftListener() {
   console.log("Attaching submit listener...");
@@ -34,7 +34,7 @@ function attachCreateShiftListener() {
       if (response.ok) {
         messageDiv.style.color = 'green';
         messageDiv.textContent = 'Shift created successfully!';
-        form.reset();
+        //form.reset();
 
         alert('Shift created successfully!');
 

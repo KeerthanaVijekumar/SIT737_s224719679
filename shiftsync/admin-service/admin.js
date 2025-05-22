@@ -17,7 +17,13 @@ mongoose.connect(process.env.MONGO_URL, {}).then(() => {
   console.error("MongoDB error:", err);
 });
 
-app.use(cors());
+const corsOptions = {
+  origin: '*', // for dev only. Or use actual frontend URL like 'http://34.87.xxx.xxx'
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+app.use(cors(corsOptions));
+
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
@@ -125,6 +131,19 @@ app.put('/shifts/:shiftId', async (req, res) => {
     res.status(500).json({ message: 'Failed to update shift' });
   }
 });
+
+// === View Only Available Shifts ===
+app.get('/shifts/available', async (req, res) => {
+  try {
+    const allocatedShiftIds = await Allocation.find().distinct('shift_id');
+    const availableShifts = await Shift.find({ shiftId: { $nin: allocatedShiftIds } }).lean();
+    res.json(availableShifts);
+  } catch (err) {
+    console.error("Error fetching available shifts:", err);
+    res.status(500).json({ message: "Failed to fetch available shifts" });
+  }
+});
+
 
 
 // === VERSION ===

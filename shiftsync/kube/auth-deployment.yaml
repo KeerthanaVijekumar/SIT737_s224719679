@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: s224719679/auth-service:v3
+          image: australia-southeast1-docker.pkg.dev/shiftsync-gcp/shiftsync-repo/auth-service:latest
           ports:
             - containerPort: 3000
           env:

@@ -27,37 +27,46 @@ document.querySelectorAll('.tab').forEach(btn => {
 
 // === Load Available Shifts ===
 async function loadAvailableShifts() {
+  const contentArea = document.getElementById('content-area');
   contentArea.innerHTML = '<h3>Loading Available Shifts...</h3>';
+
+  const ADMIN_API_URL = 'http://34.116.118.12:3000';
+
   try {
-    const res = await fetch('http://localhost:3000/shifts/available', {
+    const res = await fetch(`${ADMIN_API_URL}/shifts/available`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
 
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Backend error: ${errorText}`);
-    }
+    if (!res.ok) throw new Error("Failed to fetch available shifts");
 
     const shifts = await res.json();
 
-    if (!Array.isArray(shifts) || shifts.length === 0) {
+    if (shifts.length === 0) {
       contentArea.innerHTML = '<p>No shifts available.</p>';
       return;
     }
 
     const table = document.createElement('table');
     table.innerHTML = `
-      <tr><th>Date</th><th>Time</th><th>Action</th></tr>
+      <tr>
+        <th>Shift ID</th>
+        <th>Date</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Action</th>
+      </tr>
       ${shifts.map(s => `
         <tr>
+          <td>${s.shiftId}</td>
           <td>${s.date}</td>
-          <td>${s.time}</td>
-          <td><button onclick="acceptShift('${s._id}')">Accept</button></td>
-        </tr>`).join('')}
+          <td>${s.startTime}</td>
+          <td>${s.endTime}</td>
+          <td><button onclick="pickShift('${s.shiftId}')">Pick</button></td>
+        </tr>
+      `).join('')}
     `;
-
     contentArea.innerHTML = '<h3>Available Shifts</h3>';
     contentArea.appendChild(table);
   } catch (err) {
@@ -65,35 +74,38 @@ async function loadAvailableShifts() {
   }
 }
 
-// === Accept Shift ===
-async function acceptShift(shiftId) {
+// === Pick Shift (same as accept) ===
+async function pickShift(shiftId) {
+  const EMPLOYEE_API_URL = 'http://34.87.197.198:3000';
+  const employeeId = localStorage.getItem("employeeId");
+
   try {
-    const res = await fetch('http://localhost:3000/allocate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ shift_id: shiftId })
+    const res = await fetch(`${EMPLOYEE_API_URL}/allocate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ employeeId, shift_id: shiftId })
     });
 
-    const data = await res.json();
+    const result = await res.json();
+
     if (res.ok) {
-      alert('Shift accepted successfully!');
+      alert("Shift picked successfully!");
       loadAvailableShifts();
     } else {
-      alert(data.message || 'Failed to accept shift');
+      alert(result.message || "Failed to pick shift.");
     }
   } catch (err) {
-    alert('Error accepting shift');
+    alert("Something went wrong while picking shift.");
+    console.error(err);
   }
 }
+
 
 // === Load My Roster ===
 async function loadRoster() {
   contentArea.innerHTML = '<h3>Loading Your Roster...</h3>';
   try {
-    const res = await fetch('http://localhost:3000/roster', {
+    const res = await fetch(`${EMPLOYEE_API_URL}/roster`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

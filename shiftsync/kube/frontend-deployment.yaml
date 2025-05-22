@@ -14,11 +14,11 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: s224719679/frontend-service:v4
+          image: australia-southeast1-docker.pkg.dev/shiftsync-gcp/shiftsync-repo/frontend-service:latest
           ports:
             - containerPort: 3003
           env:
             - name: AUTH_API_URL
-              value: "http://335.244.91.242:3000"
+              value: "http://35.189.38.17:3000"
             - name: ADMIN_API_URL
-              value: "http://35.189.45.141:3000"
+              value: "http://34.116.118.12:3000"

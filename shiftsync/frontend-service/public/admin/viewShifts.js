@@ -7,7 +7,7 @@ async function loadShifts() {
   tbody.innerHTML = '';
   noShiftsMsg.style.display = 'none';
 
-  const ADMIN_API_URL = 'http://35.189.45.141:3000';
+  const ADMIN_API_URL = 'http://34.116.118.12:3000';
 
   try {
     const response = await fetch(`${ADMIN_API_URL}/shifts`);
@@ -43,7 +43,7 @@ async function loadShifts() {
 }
 
 async function deleteShift(shiftId) {
-  const ADMIN_API_URL = 'http://35.189.45.141:3000';
+  const ADMIN_API_URL = 'http://34.116.118.12:3000';
 
   if (confirm(`Delete shift ${shiftId}?`)) {
     try {
@@ -94,7 +94,7 @@ async function saveEdit(button, shiftId) {
     endTime: inputs[2].value,
   };
 
-  const ADMIN_API_URL = 'http://35.189.45.141:3000';
+  const ADMIN_API_URL = 'http://34.116.118.12:3000';
 
   try {
     const res = await fetch(`${ADMIN_API_URL}/shifts/${shiftId}`, {

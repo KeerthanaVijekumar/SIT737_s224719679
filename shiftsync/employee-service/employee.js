@@ -67,10 +67,28 @@ app.get('/shifts/available', verifyToken, async (req, res) => {
 // === POST: Accept a Shift ===
 app.post('/allocate', verifyToken, async (req, res) => {
   const { shift_id } = req.body;
-  const newAlloc = new Allocation({ employee_id: req.user.id, shift_id });
-  await newAlloc.save();
-  res.json({ message: 'Shift allocated', allocation: newAlloc });
+
+  try {
+    // Check if this shift is already picked
+    const existing = await Allocation.findOne({ shift_id });
+    if (existing) {
+      return res.status(400).json({ message: 'This shift has already been picked by another employee.' });
+    }
+
+    // Save new allocation
+    const newAlloc = new Allocation({
+      employee_id: req.user.id,
+      shift_id
+    });
+
+    await newAlloc.save();
+    res.json({ message: 'Shift allocated successfully', allocation: newAlloc });
+  } catch (err) {
+    console.error('Error allocating shift:', err);
+    res.status(500).json({ message: 'Failed to allocate shift' });
+  }
 });
+
 
 // === GET: My Roster (Allocated Shifts) ===
 app.get('/roster', verifyToken, async (req, res) => {
