@@ -2,6 +2,8 @@ const contentArea = document.getElementById('content-area');
 const token = localStorage.getItem('token');
 const role = localStorage.getItem('role');
 
+const EMPLOYEE_API_URL = 'http://34.87.197.198:3000'; // your employee-service external IP
+
 if (!token || role !== 'employee') {
   alert('Unauthorized. Redirecting to login...');
   window.location.href = '/login.html';
@@ -74,16 +76,19 @@ async function loadAvailableShifts() {
   }
 }
 
-// === Pick Shift (same as accept) ===
+// === Pick Shift  ===
 async function pickShift(shiftId) {
   const EMPLOYEE_API_URL = 'http://34.87.197.198:3000';
-  const employeeId = localStorage.getItem("employeeId");
+  const token = localStorage.getItem('token');
 
   try {
     const res = await fetch(`${EMPLOYEE_API_URL}/allocate`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ employeeId, shift_id: shiftId })
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ shift_id: shiftId })  // backend expects 'shift_id'
     });
 
     const result = await res.json();
@@ -103,6 +108,7 @@ async function pickShift(shiftId) {
 
 // === Load My Roster ===
 async function loadRoster() {
+  const EMPLOYEE_API_URL = 'http://34.87.197.198:3000';
   contentArea.innerHTML = '<h3>Loading Your Roster...</h3>';
   try {
     const res = await fetch(`${EMPLOYEE_API_URL}/roster`, {
@@ -124,14 +130,16 @@ async function loadRoster() {
     }
 
     const table = document.createElement('table');
-    table.innerHTML = `
-      <tr><th>Date</th><th>Time</th></tr>
-      ${shifts.map(s => `
-        <tr>
-          <td>${s.date}</td>
-          <td>${s.time}</td>
-        </tr>`).join('')}
-    `;
+table.innerHTML = `
+  <tr><th>Date</th><th>Start</th><th>End</th></tr>
+  ${shifts.map(s => `
+    <tr>
+      <td>${s.date}</td>
+      <td>${s.startTime}</td>
+      <td>${s.endTime}</td>
+    </tr>`).join('')}
+`;
+
 
     contentArea.innerHTML = '<h3>My Roster</h3>';
     contentArea.appendChild(table);

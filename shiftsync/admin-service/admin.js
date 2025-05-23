@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGO_URL, {}).then(() => {
 });
 
 const corsOptions = {
-  origin: '*', // for dev only. Or use actual frontend URL like 'http://34.87.xxx.xxx'
+  origin: '*', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
@@ -69,6 +69,33 @@ app.get('/shifts', async (req, res) => {
     res.status(500).json({ message: "Failed to fetch shifts" });
   }
 });
+
+// === GET: All Allocated (Picked) Shifts ===
+app.get('/picked-shifts', async (req, res) => {
+  try {
+    const allocations = await Allocation.find().lean();
+    const shiftIds = allocations.map(a => a.shift_id);
+    const shifts = await Shift.find({ shiftId: { $in: shiftIds } }).lean();
+
+    const combined = allocations.map(a => {
+      const shift = shifts.find(s => s.shiftId === a.shift_id);
+      return {
+        employee_id: a.employee_id,
+        shift_id: a.shift_id,
+        approved: a.approved || false,
+        date: shift?.date || '',
+        startTime: shift?.startTime || '',
+        endTime: shift?.endTime || ''
+      };
+    });
+
+    res.json(combined);
+  } catch (err) {
+    console.error("Error loading picked shifts:", err);
+    res.status(500).json({ message: 'Failed to load picked shifts' });
+  }
+});
+
 
 // === Approve a Shift Allocation ===
 app.put('/approve', async (req, res) => {

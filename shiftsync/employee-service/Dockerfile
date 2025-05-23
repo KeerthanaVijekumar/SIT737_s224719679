@@ -11,6 +11,9 @@ RUN npm install
 # Copy the entire service source
 COPY . .
 
+# Copy frontend files into container
+COPY ../frontend-service/public ./frontend-service/public
+
 # Expose the service port
 EXPOSE 3000
 

@@ -13,7 +13,7 @@
       <button onclick="showTab('welcome')"> Dashboard</button>
       <button onclick="showTab('create-shift')"> Create Shift</button>
       <button onclick="showTab('view-shifts')"> View Shifts</button>
-      <button onclick="showTab('approve-timesheets')"> Approve Timesheets</button>
+      <button onclick="loadAndShowApproveTimesheets()"> Approve Timesheets</button>
       <button onclick="logout()">Logout</button>
     </nav>
 
@@ -58,7 +58,7 @@
       const div = document.getElementById('create-shift');
       div.innerHTML = html;
 
-      // Remove existing create-shift.js script if present
+  
       const existingScript = div.querySelector('script[src="/admin/create-shift.js"]');
       if (existingScript) existingScript.remove();
 
@@ -92,6 +92,34 @@
 
     // Attach loadViewShifts to View Shifts tab button
     document.querySelector('button[onclick="showTab(\'view-shifts\')"]').addEventListener('click', loadViewShifts);
+
+    //load picked shifts
+ function loadApproveTimesheets() {
+      const div = document.getElementById('approve-timesheets');
+      fetch('/admin/approveTimesheets.html')
+        .then(res => res.text())
+        .then(html => {
+          div.innerHTML = html;
+
+          if (!document.querySelector('script[src="/admin/approveTimesheets.js"]')) {
+            const script = document.createElement('script');
+            script.src = '/admin/approveTimesheets.js';
+            script.onload = () => {
+              if (window.loadPickedShifts) window.loadPickedShifts();
+            };
+            document.body.appendChild(script);
+          } else {
+            if (window.loadPickedShifts) window.loadPickedShifts();
+          }
+        });
+    }
+
+
+function loadAndShowApproveTimesheets() {
+  showTab('approve-timesheets');
+  loadApproveTimesheets();
+}
+
   </script>
 </body>
 </html>

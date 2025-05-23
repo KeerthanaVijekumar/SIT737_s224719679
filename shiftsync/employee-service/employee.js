@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URL, {}).then(() => {
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../frontend-service')));
+app.use(express.static(path.join(__dirname, '../frontend-service/public')));
 
 // Auth Middleware
 function verifyToken(req, res, next) {
@@ -37,7 +37,7 @@ function verifyToken(req, res, next) {
 
 // === UI Entry Point ===
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend-service/employee.html'));
+  res.sendFile(path.join(__dirname, '../frontend-service/public/employee/employee.html'));
 });
 
 // === GET: Available Shifts (Not Yet Allocated) ===
