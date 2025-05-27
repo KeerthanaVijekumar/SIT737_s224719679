@@ -3,7 +3,7 @@
 
   async function loadPickedShifts() {
     const container = document.getElementById('pickedShifts');
-    container.innerHTML = '<p>Loading picked shifts...</p>';
+    container.innerHTML = '';
 
     try {
       const res = await fetch(`${ADMIN_API_URL}/picked-shifts`);
@@ -26,6 +26,7 @@
             <th style="border: 1px solid #ddd; padding: 8px;">Start Time</th>
             <th style="border: 1px solid #ddd; padding: 8px;">End Time</th>
             <th style="border: 1px solid #ddd; padding: 8px;">Status</th>
+            <th style="border: 1px solid #ddd; padding: 8px;">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +38,10 @@
               <td style="border: 1px solid #ddd; padding: 8px;">${s.startTime}</td>
               <td style="border: 1px solid #ddd; padding: 8px;">${s.endTime}</td>
               <td style="border: 1px solid #ddd; padding: 8px;">${s.approved ? 'Approved' : 'Pending'}</td>
+              <td style="border: 1px solid #ddd; padding: 8px;">
+                  <button style="margin-right: 5px;">Approve</button>
+                  <button>Decline</button>
+              </td>
             </tr>`).join('')}
         </tbody>
       `;
